@@ -13,5 +13,12 @@ export const postOrder = (body) => {
   }
   ).then(res => res.json())
   .catch(err => console.log(err))
+}
 
+export const removeOrder = (id) => {
+  return fetch('http://localhost:3001/api/v1/orders/' + String(id) + '/', {
+    method: 'DELETE'
+  }
+  ).then(res => res.json())
+  .catch(err => console.log(err))
 }
