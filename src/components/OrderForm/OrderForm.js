@@ -28,8 +28,13 @@ class OrderForm extends Component {
   }
 
   handleIngredientChange = (e) => {
-    console.log(e.target.name)
-    if (!this.state.ingredients.includes(e.target.name)) {
+    let duplicateCounter = 0
+    this.state.ingredients.forEach(ingredient => {
+      if (ingredient === e.target.name) {
+        duplicateCounter ++
+      }
+    })
+    if (duplicateCounter < 2) {
     this.setState({...this.state, ingredients: [...this.state.ingredients, e.target.name]})
   }
   } 
