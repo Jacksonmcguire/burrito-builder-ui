@@ -1,8 +1,13 @@
 import React from 'react';
 import './Orders.css';
 
-const Orders = props => {
-  const orderEls = props.orders.map((order) => {
+const Orders = ({orders, deleteOrder}) => {
+  
+
+const orderEls = orders.map((order) => {
+    const handleDelete = () => { 
+      deleteOrder(order.id)
+    }
     return (
       <div className="order" key={order.name + order.ingredients[0]}>
         <h3>{order.name}</h3>
@@ -11,6 +16,7 @@ const Orders = props => {
             return <li key={'ingredient' + index}>{ingredient}</li>
           })}
         </ul>
+        <button onClick={handleDelete}>🗑</button>
       </div>
     )
   });
