@@ -1,7 +1,7 @@
 describe('Burrito Builder', () => {
 
   beforeEach(() => {
-    cy.fixture('orders').as('orders').then(( data ) => {
+    cy.fixture('orders').then(( data ) => {
       console.log(data)
       cy.intercept('GET', 'http://localhost:3001/api/v1/orders', {
         statusCode: 200,
@@ -15,7 +15,8 @@ describe('Burrito Builder', () => {
         body: data,
       }).as('post')      
     })
-    
+    cy.intercept('DELETE', 'http://localhost:3001/api/v1/orders/1', {fixture: 'orders'}).as('deleted')
+
     cy.visit('http://localhost:3000')
   })
 
@@ -52,5 +53,14 @@ describe('Burrito Builder', () => {
     cy.get('button').contains('Submit Order').click()
 
     cy.get('form').contains('you must give a name and at least one ingredient to place an order')
+  })
+
+  it('should allow a user to delete an order of their choice', () => {
+    cy.get('.order').find('button').click()
+
+    cy.wait('@deleted').its('response').then(data => {
+      cy.expect(data.body.orders[0].name).to.deep.equal('Pat')
+      cy.expect(data.statusCode).to.deep.equal(200)
+    })
   })
 })
